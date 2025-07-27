@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Under Construction - Hold Your Horses!</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f8f8; /* Very light gray background for the page */
+        }
+        .icon-bounce {
+            animation: bounce 1.5s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55); /* More exaggerated bounce */
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-30px) rotate(5deg); /* Bounce higher and add a slight tilt */
+            }
+        }
+        /* Styles for the custom message box */
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .message-box-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .message-box-content {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        .message-box-overlay.show .message-box-content {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="relative w-full max-w-xl bg-white p-10 rounded-2xl shadow-xl border-t-8 border-b-8 border-yellow-500 overflow-hidden">
+        <div class="relative z-10 text-center py-8 px-4">
+            <!-- Super sized and bouncier construction emoji -->
+            <p class="text-8xl md:text-9xl mb-6 icon-bounce">
+                🚧
+            </p>
+
+            <h1 class="text-5xl md:text-6xl font-extrabold text-gray-800 mb-4 leading-tight">
+                Oopsie Daisy!
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-8">
+                Our digital construction crew is still wearing their pajamas!
+            </p>
+            <p class="text-md text-gray-500 mb-6">
+                We're currently wrestling with some rogue pixels and teaching our code to play nice. This site is still under construction and isn't quite finished yet. We appreciate your patience and look forward to showing you the completed experience very soon.
+            </p>
+
+            <!-- Text area for the silly message -->
+            <textarea id="sillyMessageInput" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-yellow-500 resize-y mb-6" rows="4" placeholder="Type your silliest message here..."></textarea>
+
+            <div class="mt-10 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="javascript:void(0)" onclick="openEmailClient()" class="inline-flex items-center justify-center px-8 py-4 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition duration-300 transform hover:scale-105">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                    Send Us a Silly Message
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Message Box (now used for instructions) -->
+    <div id="sillyMessageBox" class="message-box-overlay">
+        <div class="message-box-content">
+            <p id="messageBoxTitle" class="text-2xl font-bold text-gray-800 mb-4">Almost There!</p>
+            <p id="messageBoxText" class="text-lg text-gray-600 mb-6">
+                Your email client is about to open with your silly message pre-filled. Just hit 'Send' there!
+            </p>
+            <button id="messageBoxButton" onclick="hideSillyMessage()" class="bg-yellow-500 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition duration-300 shadow-md">
+                Got It!
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Function to open the user's email client
+        function openEmailClient() {
+            const messageInput = document.getElementById('sillyMessageInput');
+            const userMessage = messageInput.value.trim();
+
+            const recipient = "itzk1ngfr@gmail.com"; // pls dont send threats or random shit
+            const subject = encodeURIComponent("A Super Silly Message from Your Construction Site!");
+            const body = encodeURIComponent(`Hey there, digital construction crew!\n\nI just wanted to send this super silly message:\n\n"${userMessage || "Oops, I forgot to type a message! Still silly, though!"}"\n\nKeep up the great work (and try to get dressed!).\n\nBest,\nA Patient Visitor`);
+
+            // Construct the mailto link
+            const mailtoLink = `mailto:${recipient}?subject=${subject}&body=${body}`;
+
+            // Open the email client
+            window.location.href = mailtoLink;
+
+            // Show a message box to inform the user
+            const messageBox = document.getElementById('sillyMessageBox');
+            const messageBoxTitle = document.getElementById('messageBoxTitle');
+            const messageBoxText = document.getElementById('messageBoxText');
+            const messageBoxButton = document.getElementById('messageBoxButton');
+
+            messageBoxTitle.textContent = "Almost There!";
+            messageBoxText.textContent = "Your email client is about to open with your silly message pre-filled. Just hit 'Send' there!";
+            messageBoxButton.classList.remove('hidden');
+            messageBox.classList.add('show');
+
+            messageInput.value = ''; // Clear the input field
+        }
+
+        // Function to hide the silly message box
+        function hideSillyMessage() {
+            const messageBox = document.getElementById('sillyMessageBox');
+            messageBox.classList.remove('show');
+        }
+
+        // A final console log to ensure the script is well-terminated
+        console.log("Script parsing complete.");
+    </script>
+</body>
+</html>
